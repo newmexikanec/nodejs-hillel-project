@@ -1,0 +1,39 @@
+<%- include('header'); -%>
+    <main class="form-signin vh-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <form method="post" action="/auth/signup" class="text-center">
+                <a href="/">
+                    <img src="/assets/logo.svg" width="48" height="48">
+                </a>
+                <h5 class="my-3">Sign up</h5>
+                <div class="form-floating">
+                    <input type="text" class="form-control input-header" id="username" name="username" value="<%=username %>"  required>
+                    <label for="name">Your Name</label>
+                </div>
+                <div class="form-floating">
+                    <input type="email" class="form-control input-regular" id="email" name="email" value="<%=email %>" required>
+                    <label for="email">E-mail</label>
+                </div>
+                <div class="form-floating">
+                    <input type="date" class="form-control input-regular" id="birthdayDate" name="birthdayDate" value="<%=birthdayDate %>" required>
+                    <label for="birthdayDate">Birthday</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control input-regular" id="password" name="password" required>
+                    <label for="password">Password</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control input-footer" id="repeatPassword" name="repeatPassword" required>
+                    <label for="repeatPassword">Repeat your password</label>
+                </div>
+                <div class="invalid-feedback">
+                    Please select a valid state.
+                </div>
+                <% if (errorMessage) { %>
+                    <h6 class="alert alert-danger"><%= errorMessage %></h6>
+                <% } %>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+            </form>
+        </div>
+    </main>
+<%- include('footer'); -%>
