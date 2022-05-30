@@ -1,7 +1,6 @@
 const express = require('express');
 const config = require('config');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const {errors} = require('celebrate');
@@ -14,12 +13,15 @@ app.set('trust proxy', 1);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser(config.get('cookieSecret')));
 app.use(session({
     secret: config.get('sessionSecret'), resave: false, saveUninitialized: true, cookie: {maxAge: 600000}
 }));
 
 app.use('/assets', express.static(path.join('public', 'assets')));
+app.use((req, res, next) => {
+    res.locals = {loggedin: !!req.session.user};
+    next();
+});
 app.use('/', require('./src/MainRouter'));
 
 app.use(errors());

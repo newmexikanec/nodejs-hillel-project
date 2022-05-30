@@ -5,12 +5,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "start:dev": "nodemon server.js",
+    "start:dev": "nodemon --legacy-watch server.js",
     "debug": "node --inspect-brk server.js"
   },
   "keywords": [
     "nodejs",
-    "express"
+    "express",
+    "docker"
   ],
   "author": "Oleksandr Petrenko",
   "license": "ISC",
@@ -21,10 +22,10 @@
     "bcryptjs": "^2.4.3",
     "celebrate": "^15.0.1",
     "config": "^3.3.7",
-    "cookie-parser": "^1.4.6",
     "ejs": "^3.1.6",
     "express": "^4.18.1",
     "express-session": "^1.17.2",
-    "mongoose": "^6.3.3"
+    "mongoose": "^6.3.3",
+    "nodemailer": "^6.7.5"
   }
 }

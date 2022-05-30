@@ -1,0 +1,15 @@
+<header class="container d-flex align-items-center justify-content-md-between py-2 mb-4 border-bottom">
+    <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <img src="/assets/logo.svg" width="48" height="48">
+        <h4>OnlineChat</h4>
+    </a>
+    <div class="col-md-3 text-end">
+        <% if (loggedin) { %>
+        <a href="/user/settings" class="text-dark text-decoration-none px-3"><%=headerUserName%></a>
+        <a href="/auth/logout" class="btn btn-outline-primary">LogOut</a>
+        <% } else { %>
+            <a href="/auth/login" class="btn btn-outline-primary me-2">Login</a>
+            <a href="/auth/signup" class="btn btn-primary">Sign-up</a>
+        <% } %>
+    </div>
+</header>

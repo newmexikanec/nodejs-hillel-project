@@ -1,5 +1,10 @@
 class MainRouter {
-    controllers = [require('./controllers/ChatController'), require('./controllers/AuthController'), require('./controllers/ApiController')];
+    controllers = [
+        require('./controllers/ChatController'),
+        require('./controllers/AuthController'),
+        require('./controllers/ApiController'),
+        require('./controllers/VerifyController')
+    ];
 
     constructor() {
         const Router = require("express");

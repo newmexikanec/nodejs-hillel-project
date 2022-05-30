@@ -1,10 +1,11 @@
 const {Schema, SchemaTypes, model} = require('mongoose');
 
 const ChatSchema = new Schema({
-    createdBy: SchemaTypes.ObjectId,
-    members: SchemaTypes.Array,
+    createdBy: {type: SchemaTypes.ObjectId, ref: 'User'},
+    members: [{type: SchemaTypes.ObjectId, ref: 'User'}],
     name: {type: String, default: 'New Chat'},
-    date: {type: Date, default: Date.now()}
+    date: {type: Date, default: Date.now},
+    isPrivate: {type: Boolean, default: false}
 });
 
 ChatSchema.statics.getChatCreatorIDByChatID = async function(id) {

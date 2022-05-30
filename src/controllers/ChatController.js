@@ -1,5 +1,4 @@
-const {User} = require('../models');
-const {accessValidation} = require("../validations");
+const {chatService, userService} = require("../services");
 
 class ChatController {
     name = 'chat';
@@ -13,25 +12,27 @@ class ChatController {
     initRoutes() {
         this.router.get('/', this.chatList);
         this.router.get(`/${this.name}`, this.chatList);
-        this.router.get(`/${this.name}/:id`, accessValidation, this.chat);
+        this.router.get(`/${this.name}/:id`, this.chat);
     }
 
     async chatList(req, res) {
-        let users = await User.find();
-        let username = '';
-        if (req.session.user) {
-            username = req.session.user.username;
-            users = users.filter(user => user.username !== username);
+        try {
+            let username = res.locals.loggedin ? req.session.user.username : null;
+            res.render('users', {
+                title: 'Users', users: await userService.getChatList(username), headerUserName: username
+            });
+        } catch (e) {
+            res.status(400).send(e.message);
         }
-
-        res.render('users', {
-            title: 'Users', users: users, loggedin: !!username, headerUserName: username
-        });
     }
 
     async chat(req, res) {
         try {
-            res.send(`user ${req.params.id}`);
+            if (!res.locals.loggedin) {
+                return res.status(404).send("You don't have permission for access");
+            }
+            const chat = await chatService.getPrivateChat(req.session.user.id, req.params.id);
+            res.send(`Chat window for "${chat._id}"`);
         } catch (e) {
             res.status(400).send(e.message);
         }

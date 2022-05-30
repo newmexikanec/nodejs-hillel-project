@@ -1,0 +1,23 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: "./docker/dockerfile-dev"
+    ports:
+      - "3000:80"
+      - "3001:443"
+    networks:
+      - local
+    links:
+      - db
+    volumes:
+      - .:/app
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - local
+networks:
+  local:
