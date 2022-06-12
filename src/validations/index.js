@@ -1,7 +1,6 @@
 const {createUserValidation, loginUserValidation} = require('./auth.validations');
 const {accessValidation} = require('./chat.validations');
 const {
-    apiAccess,
     apiCreateUserValidation,
     apiLoginUserValidation,
     updateUserValidation,
@@ -17,7 +16,6 @@ const {
 module.exports = {
     createUserValidation,
     loginUserValidation,
-    apiAccess,
     apiCreateUserValidation,
     apiLoginUserValidation,
     accessValidation,

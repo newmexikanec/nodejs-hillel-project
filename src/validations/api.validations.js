@@ -2,14 +2,6 @@ const {celebrate, Joi, Segments} = require('celebrate');
 const {getMongoIdSchema, getLoginSchema, getCreateUserSchema} = require('./global.joi');
 const {User, Chat, Message} = require("../models");
 
-const apiAccess = (req, res, next) => {
-    if (!res.locals.loggedin) {
-        res.status(400).json({errorMessage: 'You do not have access to this functionality'});
-    } else {
-        next();
-    }
-};
-
 const apiCreateUserValidation = celebrate({
     [Segments.BODY]: getCreateUserSchema()
 });
@@ -82,7 +74,6 @@ const updateMessageValidation = celebrate({
 });
 
 module.exports = {
-    apiAccess,
     apiCreateUserValidation,
     apiLoginUserValidation,
     updateUserValidation,

@@ -1,5 +1,3 @@
-const {userService} = require("../services");
-
 class VerifyController {
     name = 'verify';
 
@@ -19,7 +17,9 @@ class VerifyController {
             const {userService} = require('../services');
             const {verifyingKey} = req.params;
             const user = await userService.verify(verifyingKey);
-            res.send(`User ${user.username} was verified`);
+            res.render('verifymessage', {
+                title: 'Verification', message: `User ${user.username} was verified`
+            });
         } catch (e) {
             res.status(400).send(e.message);
         }

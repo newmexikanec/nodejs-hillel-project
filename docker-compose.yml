@@ -5,12 +5,13 @@ services:
       context: .
       dockerfile: "./docker/dockerfile-dev"
     ports:
-      - "3000:80"
+      - "80:80"
       - "3001:443"
     networks:
       - local
     links:
       - db
+#      - redis
     volumes:
       - .:/app
   db:
@@ -19,5 +20,13 @@ services:
       - "27017:27017"
     networks:
       - local
+#  redis:
+#    image: redis:latest
+#    environment:
+#      - ALLOW_EMPTY_PASSWORD=yes
+#    networks:
+#      - local
+#    volumes:
+#      - ../data-volumes:/data/db
 networks:
   local:

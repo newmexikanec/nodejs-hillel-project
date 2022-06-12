@@ -1,11 +1,21 @@
 module.exports = {
     http: {
         host: 'localhost',
-        port: 80
+        externalHost: process.env.EXTERNAL_HOST || 'http://localhost',
+        port: process.env.PORT || 80
     },
-    cookieSecret: 'gdf8gdfg999fgdg',
-    sessionSecret: 'fsd534fd65sfs77df',
+    jwt: {
+        secret: 'myjwtSecretKEY'
+    },
+    session: {
+        secret: 'fsd534fd65sfs77df'
+    },
     db: {
-        connectionString: ''
+        connectionString: process.env.MONGO_URL
+    },
+    email: {
+        service: process.env.EMAIL_SERVICE,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 };

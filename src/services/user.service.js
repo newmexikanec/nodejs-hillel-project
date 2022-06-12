@@ -1,26 +1,22 @@
 const {User} = require('../models');
 const bcrypt = require("bcryptjs");
-const nodemailer = require('nodemailer');
 const config = require('config');
+const nodemailer = require('nodemailer');
 
 const sendEmail = async (email, html) => {
-    const testEmailAcc = await nodemailer.createTestAccount();
     const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
+        service: config.get('email.service'),
         auth: {
-            user: testEmailAcc.user,
-            pass: testEmailAcc.pass
+            user: config.get('email.user'),
+            pass: config.get('email.pass')
         }
     });
-    const info = await transporter.sendMail({
-        from: 'service@email.com',
+    await transporter.sendMail({
+        from: config.get('email.user'),
         to: email,
         subject: 'User verification',
         html: html
     });
-    console.log(nodemailer.getTestMessageUrl(info));// click to show email content
 }
 
 const login = (email, pass) => {
@@ -42,7 +38,7 @@ const signup = async data => {
             ...userData
         });
         await user.save();
-        const mailHtml = `Please follow <a href="http://${config.get('http.host')}:3000/verify/send/${user.verifyingKey}">this link</a> to verificate your account`;
+        const mailHtml = `Please follow <a href="${config.get('http.externalHost')}/verify/send/${user.verifyingKey}">this link</a> to verificate your account`;
         await sendEmail(user.email, mailHtml);
         return user._id
     } catch (e) {

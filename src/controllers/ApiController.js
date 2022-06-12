@@ -1,5 +1,6 @@
 const {User, Message, Chat} = require("../models");
-const {userService} = require('../services');
+const {userService, jwtService} = require('../services');
+const jwtHook = require('../middlewares/jwt.middleware');
 const {
     apiCreateUserValidation,
     apiLoginUserValidation,
@@ -12,7 +13,6 @@ const {
     userIDParamValidation,
     chatIDParamValidation
 } = require("../validations");
-const {apiAccess} = require("../validations/api.validations");
 
 class ApiController {
     name = 'api';
@@ -25,39 +25,30 @@ class ApiController {
 
     initRoutes() {
         this.router.post(`/${this.name}/login`, apiLoginUserValidation, this.login);
-        this.router.get(`/${this.name}/logout`, apiAccess, this.logout);
         this.router.post(`/${this.name}/signup`, apiCreateUserValidation, this.signup);
-        this.router.get(`/${this.name}/users`, this.getUsers);
-        this.router.get(`/${this.name}/users/:id`, apiAccess, userIDParamValidation, this.getUsersByID);
-        this.router.put(`/${this.name}/users/:id`, apiAccess, userIDParamValidation, updateUserValidation, this.updateUserByID);
-        this.router.delete(`/${this.name}/users/:id`, apiAccess, userIDParamValidation, this.deleteUserByID);
 
-        this.router.get(`/${this.name}/chat/:id`, apiAccess, chatIDParamValidation, this.getChatByID);
-        this.router.post(`/${this.name}/chat`, apiAccess, createChatValidation, this.createChat);
-        this.router.put(`/${this.name}/chat/:id`, apiAccess, chatIDParamValidation, updateChatValidation, this.updateChatByID);
-        this.router.delete(`/${this.name}/chat/:id`, apiAccess, chatIDParamValidation, this.deleteChatByID);
+        this.router.get(`/${this.name}/users`, jwtHook, this.getUsers);
+        this.router.get(`/${this.name}/users/:id`, jwtHook, userIDParamValidation, this.getUsersByID);
+        this.router.put(`/${this.name}/users/:id`, jwtHook, userIDParamValidation, updateUserValidation, this.updateUserByID);
+        this.router.delete(`/${this.name}/users/:id`, jwtHook, userIDParamValidation, this.deleteUserByID);
 
-        this.router.get(`/${this.name}/message/:id`, apiAccess, chatIDParamValidation, this.getChatMessagesByChatID);
-        this.router.post(`/${this.name}/message`, apiAccess, addMessageValidation, this.addMessage);
-        this.router.put(`/${this.name}/message/:id`, apiAccess, messageIDParamValidation, updateMessageValidation, this.updateMessageByID);
-        this.router.delete(`/${this.name}/message/:id`, apiAccess, messageIDParamValidation, this.deleteMessage);
+        this.router.get(`/${this.name}/chat/:id`, jwtHook, chatIDParamValidation, this.getChatByID);
+        this.router.post(`/${this.name}/chat`, jwtHook, createChatValidation, this.createChat);
+        this.router.put(`/${this.name}/chat/:id`, jwtHook, chatIDParamValidation, updateChatValidation, this.updateChatByID);
+        this.router.delete(`/${this.name}/chat/:id`, jwtHook, chatIDParamValidation, this.deleteChatByID);
+
+        this.router.get(`/${this.name}/message/:id`, jwtHook, chatIDParamValidation, this.getChatMessagesByChatID);
+        this.router.post(`/${this.name}/message`, jwtHook, addMessageValidation, this.addMessage);
+        this.router.put(`/${this.name}/message/:id`, jwtHook, messageIDParamValidation, updateMessageValidation, this.updateMessageByID);
+        this.router.delete(`/${this.name}/message/:id`, jwtHook, messageIDParamValidation, this.deleteMessage);
     }
 
     async login(req, res) {
         try {
             const {email, password} = req.body;
-            const user = await userService.login(email, password);
-            req.session.user = user;
-            res.status(200).json(user);
-        } catch (e) {
-            res.status(400).json({errorMessage: e.message});
-        }
-    }
-
-    async logout(req, res) {
-        try {
-            req.session.destroy();
-            res.status(200).end();
+            const {id, username} = await userService.login(email, password);
+            const token = jwtService.generateTocken({id, username, email});
+            res.status(200).json({token});
         } catch (e) {
             res.status(400).json({errorMessage: e.message});
         }
@@ -75,8 +66,7 @@ class ApiController {
 
     async getUsers(req, res) {
         try {
-            let username = res.locals.loggedin ? req.session.user.username : null;
-            res.status(200).json({'users': await userService.getChatList(username)});
+            res.status(200).json({'users': await userService.getChatList(req.user ? req.user.username : null)});
         } catch (e) {
             res.status(400).json({errorMessage: e.message});
         }
