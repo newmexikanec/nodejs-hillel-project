@@ -13,7 +13,7 @@ const getPrivateChat = async (senderId, recipientId) => {
         await chat.save();
     }
     return chat;
-}
+};
 
 module.exports = {
     getPrivateChat

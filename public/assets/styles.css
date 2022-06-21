@@ -1,0 +1,77 @@
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
+.form-signin .checkbox {
+    font-weight: 400;
+}
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+.form-signin .input-header {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin .input-footer {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.form-signin .input-regular {
+    margin-bottom: -1px;
+    border-radius: 0;
+}
+
+.chat-box {
+    background-color: rgba(0,0,0,.01);
+    overflow-y: scroll;
+    height:77vh;
+    padding: 16px 12px;
+}
+.media-chat {
+    flex-direction: column;
+    display: flex;
+}
+.media-chat p {
+    padding: 6px 8px;
+    margin: 2px auto 2px 0;
+    background-color: palegoldenrod;
+    border-radius: 3px;
+    font-weight: 200;
+    max-width: 60%;
+}
+.media-chat.media-chat-reverse p {
+    margin-left: auto;
+    margin-right: 0;
+    background-color: #48b0f7;
+    color: #fff;
+}
+.media-chat p span{
+    font-weight: 500;
+    font-size: x-small;
+    position: relative;
+    top: 14px;
+    left: 5px;
+    float: right;
+}
+
+.publisher {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+}
+.publisher-input {
+    flex-grow: 1;
+    border: none;
+    outline: none !important;
+    background-color: transparent;
+}
+
+button, input, optgroup, select, textarea {
+    font-family: Roboto,sans-serif;
+    font-weight: 300;
+}

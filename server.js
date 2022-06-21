@@ -1,36 +1,36 @@
 const express = require('express');
+const {createServer} = require('http');
+const {Server} = require('socket.io');
 const config = require('config');
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const {errors} = require('celebrate');
-// const RedisStore = require("connect-redis")(session);
-// const {createClient} = require("redis");
 const MongoStore = require('connect-mongo');
-const cors = require('cors');
+const onConnection = require('./src/socket');
 
 (async () => {
     try {
         const app = express();
+        const httpServer = createServer(app);
+        const io = new Server(httpServer);
+
+        io.on('connection', socket => {
+            onConnection(io, socket)
+        });
 
         app.set('view engine', 'ejs');
         app.set('views', path.join(__dirname, 'views'));
         app.set('trust proxy', 1);
 
-        // const redisClient = createClient({
-        //     legacyMode: true, url: 'redis://redis'
-        // });
-        // await redisClient.connect();
-
         app.use(session({
-            // store: new RedisStore({client: redisClient}),
             store: MongoStore.create({mongoUrl: config.get('db.connectionString')}),
             secret: config.get('session.secret'),
             resave: false,
-            saveUninitialized: true
+            saveUninitialized: false
         }));
+
         app.use(express.json());
-        app.use(cors());
         app.use(express.urlencoded({extended: true}));
         app.use('/assets', express.static(path.join('public', 'assets')));
         app.use((req, res, next) => {
@@ -42,7 +42,7 @@ const cors = require('cors');
 
         await mongoose.connect(config.get('db.connectionString'));
 
-        app.listen(config.get('http.port'), () => {
+        httpServer.listen(config.get('http.port'), () => {
             console.log(`Server is running on http://${config.get('http.host')}:${config.get('http.port')}`);
         });
     } catch (e) {

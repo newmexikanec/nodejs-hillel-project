@@ -1,17 +1,23 @@
 <%- include('header'); -%>
 <%- include('navigationbar'); -%>
 <main class="container">
-    <div class="card w-50 mx-auto text-center">
+    <div class="card w-50 mx-auto text-center shadow">
         <h6 class="card-header">Users</h6>
         <div class="card-body">
             <ul class="list-group">
                 <% users.forEach(itm => { %>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li class="list-group-item d-flex justify-content-between align-items-center <%= itm.hasMessages ? 'list-group-item-info' : '' %>">
                         <%= itm.username %>
                         <% if (loggedin) { %>
-                        <a href="/chat/<%= itm.id %>">
-                            <span class="badge bg-primary rounded-pill px-3">Chat</span>
-                        </a>
+                            <span class="text-end">
+                                <% if (itm.hasMessages) { %>
+                                    <span class="badge bg-success px-3"
+                                          title="New messages"><%= itm.hasMessages %></span>
+                                <% } %>
+                                <a href="/chat/<%= itm.id %>">
+                                    <span class="badge bg-primary rounded-pill px-3">Chat</span>
+                                </a>
+                            </span>
                         <% } %>
                     </li>
                 <% }); %>

@@ -158,6 +158,7 @@ class ApiController {
 
     async deleteChatByID(req, res) {
         try {
+            await Message.deleteMany({chatID: req.params.id});
             await Chat.findByIdAndDelete(req.params.id);
             res.status(200).end();
         } catch (e) {

@@ -1,0 +1,62 @@
+<%- include('header'); -%>
+<%- include('navigationbar'); -%>
+<main class="container">
+    <% if (loggedin) { %>
+        <div class="card w-50 mx-auto shadow">
+            <h6 class="card-header text-center"><%= companion %></h6>
+            <div class="chat-box" chat-id="<%= chatID %>">
+                <% messages.forEach(itm => { %>
+                    <div class="media-chat <%= userID === itm.senderID.toString() ? 'media-chat-reverse' : '' %>">
+                        <% const date = new Date(itm.date); %>
+                        <% const minutes = date.getMinutes(); %>
+                        <p><%=itm.text%><span><%= date.getHours() %>:<%= minutes < 10 ? '0' + minutes : minutes %></span></p>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="publisher bt-1 border-light">
+                <input class="publisher-input" type="text" placeholder="Write something and press Enter">
+            </div>
+        </div>
+        <script type="module" src="/assets/chat.js" defer></script>
+    <% } else { %>
+        <div class="text-center">
+            <h5>You do not have permission to access</h5>
+        </div>
+    <% } %>
+</main>
+<%- include('footer'); -%>
+
+<!--
+<div class="media media-chat">
+                    <div class="media-body">
+                        <p>Hi</p>
+                        <p>How are you ...???</p>
+                        <p>What are you doing tomorrow?<br> Can we come up a bar?</p>
+                    </div>
+                </div>
+                <div class="media media-chat media-chat-reverse">
+                    <div class="media-body">
+                        <p>Hiii, I'm good.</p>
+                        <p>How are you doing?</p>
+                        <p>Long time no see! Tomorrow office. will be free on sunday.</p>
+                    </div>
+                </div>
+                <div class="media media-chat">
+                    <div class="media-body">
+                        <p>Okay</p>
+                        <p>We will go on sunday? </p>
+                    </div>
+                </div>
+                <div class="media media-chat media-chat-reverse">
+                    <div class="media-body">
+                        <p>That's awesome!</p>
+                        <p>I will meet you Sandon Square sharp at 10 AM</p>
+                        <p>Is that okay?</p>
+                    </div>
+                </div>
+                <div class="media media-chat">
+                    <div class="media-body">
+                        <p>Okay i will meet you on Sandon Square </p>
+                    </div>
+                </div>
+-->
