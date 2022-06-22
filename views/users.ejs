@@ -1,28 +1,30 @@
 <%- include('header'); -%>
 <%- include('navigationbar'); -%>
 <main class="container">
-    <div class="card w-50 mx-auto text-center shadow">
-        <h6 class="card-header">Users</h6>
-        <div class="card-body">
-            <ul class="list-group">
-                <% users.forEach(itm => { %>
-                    <li class="list-group-item d-flex justify-content-between align-items-center <%= itm.hasMessages ? 'list-group-item-info' : '' %>">
-                        <%= itm.username %>
-                        <% if (loggedin) { %>
-                            <span class="text-end">
-                                <% if (itm.hasMessages) { %>
-                                    <span class="badge bg-success px-3"
-                                          title="New messages"><%= itm.hasMessages %></span>
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg">
+        <div class="card shadow mt-2">
+            <h6 class="card-header text-center">Users</h6>
+            <div class="card-body">
+                <ul class="list-group">
+                    <% users.forEach(itm => { %>
+                        <% if (loggedin) { %><a href="/chat/<%= itm.id %>" class="text-decoration-none"><% } %>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action <%= itm.hasMessages ? 'list-group-item-info' : '' %>">
+                                <%= itm.username %>
+                                <% if (loggedin && itm.hasMessages) { %>
+                                    <span class="badge bg-primary rounded-pill">
+                                    <%= itm.hasMessages %>
+                                </span>
                                 <% } %>
-                                <a href="/chat/<%= itm.id %>">
-                                    <span class="badge bg-primary rounded-pill px-3">Chat</span>
-                                </a>
-                            </span>
-                        <% } %>
-                    </li>
-                <% }); %>
-            </ul>
+                            </li>
+                        <% if (loggedin) { %></a><% } %>
+                    <% }); %>
+                </ul>
+            </div>
         </div>
+        </div>
+        <div class="col-lg-3"></div>
     </div>
 </main>
 <%- include('footer'); -%>

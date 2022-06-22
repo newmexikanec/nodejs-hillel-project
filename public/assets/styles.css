@@ -28,8 +28,8 @@
 .chat-box {
     background-color: rgba(0,0,0,.01);
     overflow-y: scroll;
-    height:77vh;
-    padding: 16px 12px;
+    height:73vh;
+    padding: 10px 15px;
 }
 .media-chat {
     flex-direction: column;
@@ -69,6 +69,10 @@
     border: none;
     outline: none !important;
     background-color: transparent;
+}
+
+.publisher .send-btn {
+    cursor: pointer;
 }
 
 button, input, optgroup, select, textarea {

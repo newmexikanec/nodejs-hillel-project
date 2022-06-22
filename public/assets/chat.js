@@ -30,12 +30,25 @@ socket.on('connect', () => {
     document
         .querySelector('.publisher-input')
         .addEventListener('keyup', e => {
-            if (e.code === 'Enter' && e.target.value) {
+            if (e.code === 'Enter' && e.target.value) {console.log('tes22t')
                 socket.emit('sendMessage', {
                     text: e.target.value,
                     senderID
                 });
                 e.target.value = '';
+            }
+        });
+
+    document
+        .querySelector('#send_message')
+        .addEventListener('click', () => {
+            const textInput = document.querySelector('.publisher-input');
+            if (textInput.value) {
+                socket.emit('sendMessage', {
+                    text: textInput.value,
+                    senderID
+                });
+                textInput.value = '';
             }
         });
 });
